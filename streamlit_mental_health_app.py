@@ -1,16 +1,25 @@
-# ✅ This is the updated and final Streamlit app for deployment
+# ✅ Final Streamlit App with Custom Banner & Welcome Message
 import streamlit as st
 import pandas as pd
 from pycaret.classification import load_model, predict_model
 
-# Load models (make sure these .pkl files are in the same directory)
+# Load models
 stress_model = load_model('catboost_stress_model')
 anxiety_model = load_model('catboost_anxiety_model')
 depression_model = load_model('catboost_depression_model')
 
 st.set_page_config(page_title="Mental Health Screening", layout="centered")
-st.title("🧠 Mental Health Prediction for Students")
-st.markdown("This tool predicts your **stress**, **anxiety**, and **depression** levels using standard screening questions. Your responses remain anonymous.")
+
+# --- Custom Banner ---
+st.markdown("""
+    <div style='background-color:#f8f9fa;padding:15px;border-radius:10px'>
+        <h1 style='color:#4B8BBE;text-align:center;'>🧠 Mental Health Prediction for University Students</h1>
+        <h4 style='text-align:center;color:#6c757d;'>Powered by Machine Learning | Anonymous & Confidential</h4>
+    </div>
+""", unsafe_allow_html=True)
+
+st.markdown("\n")
+st.markdown("This web app uses trained machine learning models to assess stress, anxiety, and depression levels based on your responses. Please take a moment to fill in your details honestly.")
 
 # --- Form for Input ---
 with st.form("user_form"):
@@ -54,8 +63,8 @@ if submitted:
 
     st.success("✅ Prediction Complete!")
     st.markdown("### 🧾 Results:")
-    st.write("**Stress Level:**", stress_result['Label'][0])
-    st.write("**Anxiety Level:**", anxiety_result['Label'][0])
-    st.write("**Depression Level:**", depression_result['Label'][0])
+    st.write("**Stress Level:**", stress_result['prediction_label'][0])
+    st.write("**Anxiety Level:**", anxiety_result['prediction_label'][0])
+    st.write("**Depression Level:**", depression_result['prediction_label'][0])
 
     st.info("These predictions are based on your answers and are not a medical diagnosis. Please reach out to a counselor if you’re concerned about your results.")
